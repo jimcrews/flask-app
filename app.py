@@ -11,6 +11,14 @@ def welcome():
     return render_template("welcome.html", cards=db)
 
 
+@app.route("/projects/<int:index>")
+def projects_view(index):
+    if index == 1:
+        return render_template("/projects/divorces.html")
+
+    return render_template("/projects/projects_index.html")
+
+
 @app.route("/card/<int:index>")
 def card_view(index):
     try:

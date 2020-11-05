@@ -1,5 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap");
+
 body {
-  font-family: sans-serif;
-  color: cornflowerblue;
-  background-color: floralwhite;
+  margin: 0;
+  padding: 0;
+}
+.banner {
+  position: relative;
+  background: white;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 450px;
+  background-size: cover;
+  background-image: linear-gradient(
+      rgba(121, 121, 121, 0.6),
+      rgba(121, 121, 121, 0.6)
+    ),
+    url("/static/images/data_banner_3.jpg");
+}
+
+.banner h1 {
+  font-size: 48px;
+  padding-top: 100px;
+  padding-left: 200px;
+  font-family: "Syne Mono", monospace;
+  color: white;
+
+  text-shadow: #000 0px 0px 5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.main-content {
+  max-width: 1244px;
+  margin: 0 auto;
+}
+
+.main-content .projects-list {
+  list-style-type: none;
+  font-size: 22px;
 }
