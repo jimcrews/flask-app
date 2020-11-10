@@ -11,10 +11,12 @@ def welcome():
     return render_template("welcome.html", cards=db)
 
 
-@app.route("/projects/<int:index>")
-def projects_view(index):
-    if index == 1:
-        return render_template("/projects/divorces.html")
+@app.route("/projects/<string:project_name>")
+def projects_view(project_name):
+    if project_name == 'hollywood_divorces':
+        return render_template("/projects/hollywood_divorces.html")
+    elif project_name == 'disney_movies':
+        return render_template("/projects/disney_movies.html")
 
     return render_template("/projects/projects_index.html")
 

@@ -1,41 +1,43 @@
-{% extends "base.html" %}
-{% block title %}Welcome{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Welcome{% endblock %} {% block
+content %}
 
 <div class="banner">
-    <h1>My Data Science Portfolio</h1>
-
+  <h1>My Data Science Portfolio</h1>
 </div>
-
 
 <div class="main-content">
+  <ul class="projects-list">
+    <li>
+      <a href="{{ url_for('projects_view', project_name='disney_movies') }}">
+        Disney movies dataset creation
+      </a>
+    </li>
 
-    
+    <li>
+      <a
+        href="{{ url_for('projects_view', project_name='hollywood_divorces') }}"
+      >
+        Divorce Rates among actors and actresses
+      </a>
+    </li>
+  </ul>
 
-    <ul class="projects-list">
+  <!--
 
-<li><a href="{{ url_for('projects_view', index=1) }}">
-    Divorce Rates among actors and actresses
-</a></li>
-    </ul>
-    
-    
-    <h2>Flash Cards</h2>
+  <h2>Flash Cards</h2>
 
-    <ul>
-        {% for card in cards %}
-            <li>
-                <a href="{{ url_for('card_view', index=loop.index0) }}">
-                    {{ card.question }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-
+  <ul>
+    {% for card in cards %}
+    <li>
+      <a href="{{ url_for('card_view', index=loop.index0) }}">
+        {{ card.question }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
 </div>
 
+-->
 
-
-    
-
-{% endblock %}
+  {% endblock %}
+</div>
