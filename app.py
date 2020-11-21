@@ -1,14 +1,22 @@
-from flask import (Flask, render_template, abort, jsonify, request,
+'''
+ Debug with
+
+ export FLASK_APP=app.py
+ export FLASK_ENV=development
+ flask run
+'''
+from flask import (Flask, render_template, abort, request,
                    redirect, url_for)
 
-from model import db, save_db
+from flask_restful import Resource, Api
 
 app = Flask(__name__)
+api = Api(app)
 
 
 @app.route("/")
 def welcome():
-    return render_template("welcome.html", cards=db)
+    return render_template("welcome.html")
 
 
 @app.route("/projects/<string:project_name>")
@@ -21,61 +29,34 @@ def projects_view(project_name):
     return render_template("/projects/projects_index.html")
 
 
-@app.route("/card/<int:index>")
-def card_view(index):
-    try:
-        card = db[index]
-        return render_template("card.html",
-                               card=card,
-                               index=index,
-                               max_index=len(db)-1)
-    except IndexError:
-        abort(404)
-
-
-@app.route("/add_card", methods=["GET", "POST"])
-def add_card():
-    if request.method == "POST":
-        # form submitted
-        card = {"question": request.form['question'],
-                "answer": request.form['answer']}
-        db.append(card)
-        save_db()
-        return redirect(url_for('card_view', index=len(db)-1))
-    else:
-        return render_template("add_card.html")
-
-
-@app.route("/remove_card/<int:index>", methods=["GET", "POST"])
-def remove_card(index):
-    if request.method == "POST":
-        # form submitted
-
-        del db[index]
-        save_db()
-        return redirect(url_for('welcome'))
-    else:
-        try:
-            card = db[index]
-            return render_template("delete_card.html",
-                                   card=card)
-        except IndexError:
-            abort(404)
-
-
 '''
 API routes
 '''
 
-
-@ app.route('/api/card/')
-def api_card_list():
-    return jsonify(db)
+items = []
 
 
-@ app.route('/api/card/<int:index>')
-def api_card_detail(index):
-    try:
-        return db[index]
-    except IndexError:
-        abort(404)
+class Item(Resource):
+    def get(self, name):
+        for item in items:
+            if item['name'] == name:
+                return item
+        return {'item': None}, 404
+
+    def post(self, name):
+        data = request.get_json()
+        item = {
+            'name': name,
+            'price': data['price']
+        }
+        items.append(item)
+        return item, 201
+
+
+class ItemList(Resource):
+    def get(self):
+        return {'items': items}
+
+
+api.add_resource(Item, '/item/<string:name>')
+api.add_resource(ItemList, '/items')
