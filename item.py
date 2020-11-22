@@ -12,8 +12,8 @@ class Item(Resource):
         required=True,
         help='This field is required')
 
-    @jwt_required()
-    def get(self, name):
+    @classmethod
+    def find_by_name(cls, name):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
         query = "SELECT * FROM items WHERE name=?"
@@ -24,10 +24,16 @@ class Item(Resource):
         if row:
             return {"item": {"name": row[0], "price": row[1]}}
 
+    @jwt_required()
+    def get(self, name):
+        item = Item.find_by_name(name)
+        if item:
+            return item
+
         return {"message": "item not found"}, 404
 
     def post(self, name):
-        if next(filter(lambda x: x['name'] == name, items), None):
+        if Item.find_by_name(name):
             return{'message': 'An item with name "{}" already exists'.format(name)}, 400
 
         data = Item.parser.parse_args()
@@ -35,27 +41,23 @@ class Item(Resource):
             'name': name,
             'price': data['price']
         }
-        items.append(item)
+
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+        query = "INSERT INTO items VALUES (?, ?)"
+        cursor.execute(query, (item['name'], item['price']))
+        connection.commit()
+        connection.close()
+
         return item, 201
 
     def delete(self, name):
-        global items
-        items = list(filter(lambda x: x['name'] != name, items))
-        return {'message': 'Item deleted'}
+        pass
 
     def put(self, name):
-
-        data = Item.parser.parse_args()
-        item = next(filter(lambda x: x['name'] == name, items), None)
-        if item is None:
-            item = {'name': name, 'price': data['price']}
-            items.append(item)
-        else:
-            item.update(data)
-
-        return item
+        pass
 
 
 class ItemList(Resource):
     def get(self):
-        return {'items': items}
+        pass
