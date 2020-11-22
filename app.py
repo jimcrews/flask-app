@@ -4,7 +4,7 @@
  export FLASK_APP=app.py
  export FLASK_ENV=development
  flask run
- 
+
 '''
 from flask import (Flask, render_template, abort, request,
                    redirect, url_for)
@@ -12,6 +12,7 @@ from flask import (Flask, render_template, abort, request,
 from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
+from user import UserRegister
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -94,3 +95,4 @@ class ItemList(Resource):
 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
+api.add_resource(UserRegister, '/register')
