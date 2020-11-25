@@ -4,7 +4,7 @@
         "--load-plugins",
         "pylint_flask_sqlalchemy",
         "pylint_flask",
-        "--disable", "W0107,C0111,C0112,wrong-import-order"
+        "--disable", "W0107,C0111,C0112,wrong-import-order,redefined-builtin,invalid-name"
     ],
 
     
