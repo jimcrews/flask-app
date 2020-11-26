@@ -7,6 +7,7 @@
  flask run
 
 '''
+from db import db
 from flask import Flask, render_template
 from flask_restful import Api
 from flask_jwt import JWT
@@ -37,9 +38,7 @@ def projects_view(project_name):
     return render_template("/projects/projects_index.html")
 
 
-if __name__ == '__main__':
-    from db import db
-    db.init_app(app)
+db.init_app(app)
 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
