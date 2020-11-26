@@ -23,6 +23,11 @@ api = Api(app)
 jwt = JWT(app, authenticate, identity)  # /auth
 
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
 @app.route("/")
 def welcome():
     return render_template("welcome.html")
